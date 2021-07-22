@@ -7,14 +7,14 @@ OBJ 		=	$(SRC:.c=.o)
 LIBS 		=	-lpthread
 FILES 		=	main.c \
 				utils.c \
-				philo_status.c \
+				parsing.c \
+				init.c \
+				exit.c \
+				log.c \
 				forks.c \
 				routine.c \
-				death.c \
-				launch.c \
-				init.c
+				check.c
 H_FILES 	= philo.h
-FSANITIZE	= 	-g3 -O0 -fsanitize=address
 
 RED			=	\033[0;31m
 GREEN		=	\033[0;32m
@@ -24,7 +24,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(HEADER)
 	@printf "[ $(NAME) ] Compiling...\r"
-	@($(CC) -o $(NAME) $(LIBS) $(SRC) $(CFLAGS))
+	@($(CC) -o $(NAME) $(SRC) $(LIBS) $(CFLAGS))
 
 clean:
 	@rm -f $(OBJ)

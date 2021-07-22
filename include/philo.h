@@ -5,11 +5,15 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <stdint.h>
 
-# define EATING 0
-# define SLEEPING 1
-# define THINKING 2
-# define DEAD 3
+# define EATING "is eating"
+# define SLEEPING "is sleeping"
+# define THINKING "is thinking"
+# define LEFT_FORK "has taken a fork"
+# define RIGHT_FORK "has taken a fork"
+# define LEFT_FORK_DROP "has dropped a fork"
+# define RIGHT_FORK_DROP "has dropped a fork"
 
 # define BLACK "\033[1;30m"
 # define RED "\033[1;31m"
@@ -21,41 +25,44 @@
 # define WHITE "\033[1;37m"
 # define NO_COLOR "\033[0;37m"
 
-typedef struct		s_info
+typedef struct s_info
 {
-	int				nb_philo;
-	uint64_t		time_to_die;
-	uint64_t		time_to_eat;
-	uint64_t		time_to_sleep;
-	uint64_t		h_zero;
-	int				must_eat;
-}					t_info;
+	int					nb_philo;
+	long long int		time_to_die;
+	long long int		time_to_eat;
+	long long int		time_to_sleep;
+	int					must_eat;
+	long long int		h_zero;
+	int					death;
+	int					finish;
+	struct s_philo		*philos;
+	pthread_mutex_t		*forks;
+	pthread_mutex_t		m_log;
+	pthread_mutex_t		m_eat;
+}						t_info;
 
-typedef struct		s_philo
+typedef struct s_philo
 {
-	int				id;
-	uint64_t		last_meal;
-	pthread_t		thread;
-	int				status;
-	int				round;
-	t_info			*info;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t *eating;
-}					t_philo;
+	int					id;
+	long long int		last_meal;
+	pthread_t			thread;
+	int					round;
+	t_info				*info;
+}						t_philo;
 
-int					ft_atoi(const char *nptr);
-uint64_t			get_time(void);
-uint64_t			get_time_log(t_info *info);
-void				take_fork(t_philo *philo);
-void				thinking(t_philo *philo);
-void				sleeping(t_philo *philo);
-void				eating(t_philo *philo);
-void				status_take_fork(t_philo *philo);
-int					take_forks(t_philo *philo);
-int					release_forks(t_philo *philo);
-void				*start_routine(t_philo *philo);
-void				*check_death(t_philo *philos);
-t_philo				*launch_philosophe(t_info *info, pthread_mutex_t *mutex);
-pthread_mutex_t		*init_mutex_forks(t_info *info);
-int					init_mutex_eating(t_philo *philos, int i);
+int						ft_atoi(const char *nptr);
+long long int			ft_long_atoi(const char *nptr);
+long long int			get_time(void);
+long long int			get_time_log(t_info *info);
+void					ft_bzero(void *s, size_t n);
+int						err_parsing(int ac, char **argv, t_info *info);
+int						init_simulation(t_info *info);
+void					init_philo_info(t_philo *philo, t_info *info, int i);
+void					proper_exit(t_info *info);
+int						ft_log(t_philo *philo, char *doing, char *color);
+int						take_forks(t_philo *philo);
+int						release_forks(t_philo *philo);
+void					*routine(t_philo *philo);
+void					*check_end_simulation(t_info *info);
+
 #endif

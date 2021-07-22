@@ -1,44 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
+/*   Updated: 2021/07/22 19:08:45 by viroques         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-int		controler(t_info *info)
-{
-	t_philo			*philos;
-	pthread_mutex_t	*mutex;
-	pthread_t		check;
+void	controler(t_info *info)
+{	
+	int			i;
+	pthread_t	check;
 
-	if (!(mutex = init_mutex_forks(info)))
-		return (1);
-	if (!(philos = launch_philosophe(info, mutex)))
-		return (1);
-	pthread_create(&check, NULL, (void *)check_death, philos);
-	pthread_join(check, NULL);
-	// i = - 1;
-	// while (i++ < info->nb_philo)
-	// 	pthread_mutex_destroy(&mutex[i]);
-	return (0);
-}
-
-void	init_info(char **argv, t_info *info)
-{
-	info->h_zero = get_time();
-	info->nb_philo = ft_atoi(argv[1]);
-	info->time_to_die = ft_atoi(argv[2]);
-	info->time_to_eat = ft_atoi(argv[3]);
-	info->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[5])
-		info->must_eat = ft_atoi(argv[5]);
-	else
-		info->must_eat = -1;
-}
-
-int		main(int ac, char **argv)
-{
-	t_info	info;
-
-	if (ac >= 5 && ac <= 6)
+	i = -1;
+	while (++i < info->nb_philo)
 	{
-		init_info(argv, &info);
-		controler(&info);
+		init_philo_info(&info->philos[i], info, i);
+		if (pthread_create(&info->philos[i].thread, NULL,
+				(void *)routine, &info->philos[i]))
+		{
+			printf("pthread_create failed \n");
+			return ;
+		}
+		pthread_detach(info->philos[i].thread);
 	}
+	usleep(100);
+	pthread_create(&check, NULL, (void *)check_end_simulation, info);
+	pthread_join(check, NULL);
+}
+
+int	main(int ac, char **argv)
+{
+	t_info		info;
+
+	if (err_parsing(ac, argv, &info)
+		|| init_simulation(&info))
+		return (1);
+	controler(&info);
+	usleep(1000000);
+	proper_exit(&info);
 	return (0);
 }

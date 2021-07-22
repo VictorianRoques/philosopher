@@ -5,41 +5,40 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/19 16:37:14 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/19 16:38:16 by viroques         ###   ########.fr       */
+/*   Created: 2021/07/21 12:22:43 by viroques          #+#    #+#             */
+/*   Updated: 2021/07/22 19:02:49 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-pthread_mutex_t		*init_mutex_forks(t_info *info)
+void	init_philo_info(t_philo *philo, t_info *info, int i)
 {
-	pthread_mutex_t	*mutex;
-	int				i;
-
-	i = 0;
-	if (!(mutex = malloc(sizeof(pthread_mutex_t) * info->nb_philo)))
-		return (NULL);
-	while (i < info->nb_philo)
-	{
-		if (pthread_mutex_init(&mutex[i], NULL))
-		{
-			printf("Mutex init failed \n");
-			return (NULL);
-		}
-		i++;
-	}
-	return (mutex);
+	philo->id = i + 1;
+	philo->last_meal = 0;
+	philo->round = 0;
+	philo->info = info;
+	philo->last_meal = get_time();
 }
 
-int			init_mutex_eating(t_philo *philos, int i)
+int	init_simulation(t_info *info)
 {
-	if (!(philos[i].eating = malloc(sizeof(pthread_mutex_t))))
+	int		i;
+
+	info->philos = malloc(sizeof(t_philo) * info->nb_philo);
+	info->forks = malloc(sizeof(pthread_mutex_t) * info->nb_philo);
+	if (!info->philos || !info->forks)
 		return (1);
-	if (pthread_mutex_init(philos[i].eating, NULL))
+	i = 0;
+	while (i < info->nb_philo)
 	{
-		printf("Mutex init failed \n");
-		return (1);
+		if ((pthread_mutex_init(&info->forks[i], NULL)))
+			return (1);
+		i++;
 	}
+	if (pthread_mutex_init(&info->m_log, NULL)
+		|| pthread_mutex_init(&info->m_eat, NULL))
+		return (1);
+	info->h_zero = get_time();
 	return (0);
 }

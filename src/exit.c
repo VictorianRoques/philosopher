@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   death.c                                            :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/19 16:31:29 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/19 16:31:51 by viroques         ###   ########.fr       */
+/*   Created: 2021/07/21 12:44:40 by viroques          #+#    #+#             */
+/*   Updated: 2021/07/22 19:03:08 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void		*check_death(t_philo *philos)
+void	proper_exit(t_info *info)
 {
-	int			i;
-	uint64_t	dead;
+	int		i;
 
-	while (1)
+	pthread_mutex_lock(&info->m_eat);
+	if (info->philos)
+		free(info->philos);
+	pthread_mutex_unlock(&info->m_eat);
+	pthread_mutex_destroy(&info->m_eat);
+	pthread_mutex_destroy(&info->m_log);
+	if (info->forks)
 	{
 		i = 0;
-		while (i < philos->info->nb_philo)
+		while (i < info->nb_philo)
 		{
-			dead = get_time_log(philos->info) - philos[i].last_meal;
-			if (dead > philos->info->time_to_die)
-			{
-				printf("%s%llu %i is dead\n", RED, get_time_log(philos->info), philos[i].id);
-				return (NULL);
-			}
+			pthread_mutex_destroy(&info->forks[i]);
 			i++;
 		}
-		usleep(1000);
+		free(info->forks);
 	}
-	return (NULL);
 }
