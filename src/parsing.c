@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 12:11:01 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/22 18:55:58 by viroques         ###   ########.fr       */
+/*   Updated: 2021/07/26 15:25:44 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,23 @@ int	only_number(int ac, char **argv)
 int	get_values(t_info *info, int ac, char **argv)
 {
 	info->nb_philo = ft_atoi(argv[1]);
+	if (!info->nb_philo)
+	{
+		printf("Need at least one philo\n");
+		return (1);
+	}
 	info->time_to_die = ft_long_atoi(argv[2]);
 	info->time_to_eat = ft_long_atoi (argv[3]);
 	info->time_to_sleep = ft_long_atoi(argv[4]);
 	if (ac == 6)
+	{
 		info->must_eat = ft_atoi(argv[5]);
+		if (!info->must_eat)
+		{
+			printf("End of simulation every philosopher eat 0 times\n");
+			return (1);
+		}
+	}
 	else
 		info->must_eat = -1;
 	return (0);
@@ -58,12 +70,10 @@ int	get_values(t_info *info, int ac, char **argv)
 
 int	err_parsing(int ac, char **argv, t_info *info)
 {
-	int	i;
-
 	if (ac >= 5 && ac <= 6)
 	{
 		ft_bzero(info, sizeof(t_info));
-		if (only_number || get_values(info, ac, argv))
+		if (only_number(ac, argv) || get_values(info, ac, argv))
 			return (1);
 	}
 	else

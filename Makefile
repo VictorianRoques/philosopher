@@ -13,7 +13,7 @@ FILES 		=	main.c \
 				log.c \
 				forks.c \
 				routine.c \
-				check.c
+				do_sleep.c
 H_FILES 	= philo.h
 
 RED			=	\033[0;31m

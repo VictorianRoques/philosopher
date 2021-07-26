@@ -10,10 +10,8 @@
 # define EATING "is eating"
 # define SLEEPING "is sleeping"
 # define THINKING "is thinking"
-# define LEFT_FORK "has taken a fork"
-# define RIGHT_FORK "has taken a fork"
-# define LEFT_FORK_DROP "has dropped a fork"
-# define RIGHT_FORK_DROP "has dropped a fork"
+# define FORK "has taken a fork"
+# define FORK_DROP "has dropped a fork"
 
 # define BLACK "\033[1;30m"
 # define RED "\033[1;31m"
@@ -64,5 +62,7 @@ int						take_forks(t_philo *philo);
 int						release_forks(t_philo *philo);
 void					*routine(t_philo *philo);
 void					*check_end_simulation(t_info *info);
-
+int						check_death(t_info *info);
+int						check_end_rounds(t_info *info);
+int						do_sleep(t_philo *philo, long long int duration);
 #endif
