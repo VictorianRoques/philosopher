@@ -57,12 +57,10 @@ int						err_parsing(int ac, char **argv, t_info *info);
 int						init_simulation(t_info *info);
 void					init_philo_info(t_philo *philo, t_info *info, int i);
 void					proper_exit(t_info *info);
-int						ft_log(t_philo *philo, char *doing, char *color);
-int						take_forks(t_philo *philo);
-int						release_forks(t_philo *philo);
+void					ft_log(t_philo *philo, char *doing, char *color);
+void					take_forks(t_philo *philo);
+void					release_forks(t_philo *philo);
 void					*routine(t_philo *philo);
-void					*check_end_simulation(t_info *info);
-int						check_death(t_info *info);
-int						check_end_rounds(t_info *info);
 int						do_sleep(t_philo *philo, long long int duration);
+
 #endif

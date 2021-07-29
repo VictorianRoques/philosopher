@@ -6,19 +6,19 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 13:08:35 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/22 20:37:27 by viroques         ###   ########.fr       */
+/*   Updated: 2021/07/27 10:50:01 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_log(t_philo *philo, char *doing, char *color)
+void	ft_log(t_philo *philo, char *doing, char *color)
 {
 	pthread_mutex_lock(&philo->info->m_log);
 	if (philo->info->death || philo->info->finish)
 	{
 		pthread_mutex_unlock(&philo->info->m_log);
-		return (1);
+		return ;
 	}
 	if (doing)
 	{
@@ -26,5 +26,4 @@ int	ft_log(t_philo *philo, char *doing, char *color)
 			NO_COLOR, BLUE, philo->id, color, doing, NO_COLOR);
 	}
 	pthread_mutex_unlock(&philo->info->m_log);
-	return (0);
 }

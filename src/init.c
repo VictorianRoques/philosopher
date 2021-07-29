@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 12:22:43 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/26 15:17:19 by viroques         ###   ########.fr       */
+/*   Updated: 2021/07/27 13:28:00 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void	init_philo_info(t_philo *philo, t_info *info, int i)
 {
 	philo->id = i + 1;
-	philo->last_meal = 0;
 	philo->round = 0;
 	philo->info = info;
+	pthread_mutex_lock(&info->m_eat);
 	philo->last_meal = get_time();
+	pthread_mutex_unlock(&info->m_eat);
 }
 
 int	init_simulation(t_info *info)
