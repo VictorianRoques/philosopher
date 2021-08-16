@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 15:54:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/16 12:53:38 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/16 14:29:23 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	delay_first_turn(t_philo *philo)
 	if (philo->info->nb_philo % 2 > 0
 		&& philo->id == philo->info->nb_philo
 		&& philo->id > 1)
-		usleep(philo->info->time_to_eat * 1000 + 50);
+		usleep(philo->info->time_to_eat * 1000);
 	if (philo->id == 1 && philo->info->nb_philo == 1)
 	{
 		ft_log(philo, FORK, GREEN);

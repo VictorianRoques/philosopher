@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/22 19:23:33 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/27 13:27:21 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/16 14:30:02 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_death(t_philo *philo)
 		death = get_time() - philo->info->philos[i].last_meal;
 		pthread_mutex_unlock(&philo->info->m_eat);
 		pthread_mutex_lock(&philo->info->m_log);
-		if (death > philo->info->time_to_die && !philo->info->death)
+		if (death >= philo->info->time_to_die && !philo->info->death)
 		{
 			philo->info->death = 1;
 			printf("%s%llu %d died %llu ms ago\n%s", RED,
