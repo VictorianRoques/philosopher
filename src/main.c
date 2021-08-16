@@ -6,15 +6,45 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
-/*   Updated: 2021/07/27 13:25:19 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/16 20:43:57 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	*check_death(t_info *info)
+{
+	long long int	death;
+	int				i;
+
+	while (1)
+	{
+		i = -1;
+		while (++i < info->nb_philo)
+		{
+			pthread_mutex_lock(&info->m_eat);
+			death = get_time() - info->philos[i].last_meal;
+			pthread_mutex_unlock(&info->m_eat);
+			pthread_mutex_lock(&info->m_log);
+			if (death >= info->time_to_die && !info->death)
+			{
+				info->death = 1;
+				printf("%s%llu %d died\n%s", RED, get_time_log(info),
+					info->philos[i].id, NO_COLOR);
+				pthread_mutex_unlock(&info->m_log);
+				usleep(500000);
+				return (NULL);
+			}
+			pthread_mutex_unlock(&info->m_log);
+		}
+		usleep(1000);
+	}
+}
+
 void	controler(t_info *info)
 {	
 	int			i;
+	pthread_t	death;
 
 	i = -1;
 	while (++i < info->nb_philo)
@@ -26,16 +56,11 @@ void	controler(t_info *info)
 			printf("pthread_create failed\n");
 			return ;
 		}
-	}
-	i = -1;
-	while (++i < info->nb_philo)
-	{
-		if (pthread_join(info->philos[i].thread, NULL))
-		{
-			printf("pthread_join failed\n");
+		if (pthread_detach(info->philos[i].thread))
 			return ;
-		}
 	}
+	pthread_create(&death, NULL, (void *)check_death, info);
+	pthread_join(death, NULL);
 }
 
 int	main(int ac, char **argv)

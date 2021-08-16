@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 15:54:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/16 14:29:23 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/16 20:19:07 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	sleeping(t_philo *philo)
 {
 	ft_log(philo, SLEEPING, GREEN);
-	do_sleep(philo, philo->info->time_to_sleep * 1000);
+	usleep(philo->info->time_to_sleep * 1000);
 }
 
 void	eating(t_philo *philo)
@@ -26,7 +26,7 @@ void	eating(t_philo *philo)
 	if (philo->info->must_eat > -1)
 		philo->round++;
 	ft_log(philo, EATING, PURPLE);
-	do_sleep(philo, philo->info->time_to_eat * 1000);
+	usleep(philo->info->time_to_eat * 1000);
 }
 
 void	delay_first_turn(t_philo *philo)
