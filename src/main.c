@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/16 20:43:57 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/25 11:11:59 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*check_death(t_info *info)
 			}
 			pthread_mutex_unlock(&info->m_log);
 		}
-		usleep(1000);
+		usleep(5000);
 	}
 }
 
