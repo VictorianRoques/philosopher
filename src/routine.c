@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 15:54:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/16 20:19:07 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:37:42 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	sleeping(t_philo *philo)
 {
 	ft_log(philo, SLEEPING, GREEN);
-	usleep(philo->info->time_to_sleep * 1000);
+	ft_usleep(philo->info->time_to_sleep);
 }
 
 void	eating(t_philo *philo)
@@ -26,23 +26,22 @@ void	eating(t_philo *philo)
 	if (philo->info->must_eat > -1)
 		philo->round++;
 	ft_log(philo, EATING, PURPLE);
-	usleep(philo->info->time_to_eat * 1000);
+	ft_usleep(philo->info->time_to_eat);
 }
 
 void	delay_first_turn(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
-		usleep(philo->info->time_to_eat * 500);
+		ft_usleep(10);
 	if (philo->info->nb_philo % 2 > 0
 		&& philo->id == philo->info->nb_philo
 		&& philo->id > 1)
-		usleep(philo->info->time_to_eat * 1000);
+		ft_usleep(20);
 	if (philo->id == 1 && philo->info->nb_philo == 1)
 	{
 		ft_log(philo, FORK, GREEN);
-		usleep(philo->info->time_to_die * 1000);
+		ft_usleep(philo->info->time_to_die);
 		philo->info->death = 1;
-		printf("%s%llu 1 died\n%s", RED, get_time_log(philo->info), NO_COLOR);
 	}
 }
 
@@ -57,5 +56,7 @@ void	*routine(t_philo *philo)
 		sleeping(philo);
 		ft_log(philo, THINKING, GREEN);
 	}
+	if (!philo->info->finish && philo->round == philo->info->must_eat)
+		philo->info->finish = 1;
 	return (NULL);
 }

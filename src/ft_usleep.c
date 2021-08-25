@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_usleep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/21 12:44:40 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 17:44:53 by viroques         ###   ########.fr       */
+/*   Created: 2021/08/25 17:40:23 by viroques          #+#    #+#             */
+/*   Updated: 2021/08/25 17:44:34 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	proper_exit(t_info *info)
+void	ft_usleep(long long int sleep)
 {
-	int		i;
+	long long int	start;
+	long long int	finish;
+	long long int	before;
 
-	usleep(500000);
-	pthread_mutex_lock(&info->m_eat);
-	free(info->philos);
-	pthread_mutex_unlock(&info->m_eat);
-	pthread_mutex_destroy(&info->m_eat);
-	pthread_mutex_destroy(&info->m_log);
-	i = 0;
-	while (i < info->nb_philo)
+	finish = get_time() + sleep;
+	start = get_time();
+	while (start < finish)
 	{
-		pthread_mutex_destroy(&info->forks[i]);
-		i++;
+		before = get_time();
+		usleep(sleep);
+		start += get_time() - before;
 	}
-	free(info->forks);
 }

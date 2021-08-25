@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 11:11:59 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:44:40 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*check_death(t_info *info)
 	long long int	death;
 	int				i;
 
-	while (1)
+	while (!info->finish)
 	{
 		i = -1;
 		while (++i < info->nb_philo)
@@ -32,13 +32,13 @@ void	*check_death(t_info *info)
 				printf("%s%llu %d died\n%s", RED, get_time_log(info),
 					info->philos[i].id, NO_COLOR);
 				pthread_mutex_unlock(&info->m_log);
-				usleep(500000);
 				return (NULL);
 			}
 			pthread_mutex_unlock(&info->m_log);
 		}
-		usleep(5000);
+		ft_usleep(1);
 	}
+	return (NULL);
 }
 
 void	controler(t_info *info)
