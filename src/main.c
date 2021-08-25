@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 17:44:40 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/25 17:46:43 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	controler(t_info *info)
 		if (pthread_detach(info->philos[i].thread))
 			return ;
 	}
-	pthread_create(&death, NULL, (void *)check_death, info);
-	pthread_join(death, NULL);
+	if (pthread_create(&death, NULL, (void *)check_death, info)
+		|| pthread_join(death, NULL))
+		return ;
 }
 
 int	main(int ac, char **argv)
