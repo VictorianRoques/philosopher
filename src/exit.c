@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 12:44:40 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 17:45:24 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/25 18:03:59 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	proper_exit(t_info *info)
 {
 	int		i;
 
-	usleep(500000);
+	ft_usleep(1000);
 	pthread_mutex_lock(&info->m_eat);
 	free(info->philos);
 	pthread_mutex_unlock(&info->m_eat);
