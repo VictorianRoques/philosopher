@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 12:11:01 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 16:28:51 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/30 11:56:04 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	only_number(int ac, char **argv)
 	{
 		if (ft_number(argv[i]))
 		{
-			printf("Only positive integer number are allowed\n");
+			printf("Only number are allowed\n");
 			return (1);
 		}
 		i++;

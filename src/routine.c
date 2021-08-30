@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 15:54:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 18:03:44 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/30 11:56:02 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,15 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->info->m_eat);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->info->m_eat);
-	if (philo->info->must_eat > -1)
-		philo->round++;
 	ft_log(philo, EATING, PURPLE);
+	if (philo->info->must_eat > -1)
+	{
+		philo->round++;
+		pthread_mutex_lock(&philo->info->m_log);
+		if (!philo->info->finish && philo->round == philo->info->must_eat)
+			philo->info->finish = 1;
+		pthread_mutex_unlock(&philo->info->m_log);
+	}
 	ft_usleep(philo->info->time_to_eat);
 }
 
@@ -48,15 +54,16 @@ void	delay_first_turn(t_philo *philo)
 void	*routine(t_philo *philo)
 {
 	delay_first_turn(philo);
+	pthread_mutex_lock(&philo->info->m_log);
 	while (philo->round != philo->info->must_eat && !philo->info->death)
 	{
+		pthread_mutex_unlock(&philo->info->m_log);
 		take_forks(philo);
 		eating(philo);
 		release_forks(philo);
 		sleeping(philo);
 		ft_log(philo, THINKING, GREEN);
 	}
-	if (!philo->info->finish && philo->round == philo->info->must_eat)
-		philo->info->finish = 1;
+	pthread_mutex_unlock(&philo->info->m_log);
 	return (NULL);
 }
