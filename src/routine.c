@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 15:54:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/30 11:56:02 by viroques         ###   ########.fr       */
+/*   Updated: 2021/09/03 11:25:26 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->info->m_eat);
 	ft_log(philo, EATING, PURPLE);
 	if (philo->info->must_eat > -1)
-	{
 		philo->round++;
+	if (philo->round == philo->info->must_eat)
+	{
 		pthread_mutex_lock(&philo->info->m_log);
-		if (!philo->info->finish && philo->round == philo->info->must_eat)
-			philo->info->finish = 1;
+		philo->info->finish++;
 		pthread_mutex_unlock(&philo->info->m_log);
 	}
 	ft_usleep(philo->info->time_to_eat);
@@ -55,7 +55,7 @@ void	*routine(t_philo *philo)
 {
 	delay_first_turn(philo);
 	pthread_mutex_lock(&philo->info->m_log);
-	while (philo->round != philo->info->must_eat && !philo->info->death)
+	while (!philo->info->death && philo->info->finish != philo->info->nb_philo)
 	{
 		pthread_mutex_unlock(&philo->info->m_log);
 		take_forks(philo);

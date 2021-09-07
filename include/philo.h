@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 13:06:44 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/25 16:52:16 by viroques         ###   ########.fr       */
+/*   Updated: 2021/09/03 14:37:23 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void					release_forks(t_philo *philo);
 void					*routine(t_philo *philo);
 int						do_sleep(t_philo *philo, long long int duration);
 void					ft_usleep(long long int sleep);
+void					*check_death(t_info *info);
 
 #endif

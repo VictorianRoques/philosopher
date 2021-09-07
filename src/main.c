@@ -6,40 +6,11 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 11:35:02 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/30 11:56:08 by viroques         ###   ########.fr       */
+/*   Updated: 2021/09/03 14:12:58 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*check_death(t_info *info)
-{
-	long long int	death;
-	int				i;
-
-	while (!info->finish)
-	{
-		i = -1;
-		while (++i < info->nb_philo)
-		{
-			pthread_mutex_lock(&info->m_eat);
-			death = get_time() - info->philos[i].last_meal;
-			pthread_mutex_unlock(&info->m_eat);
-			pthread_mutex_lock(&info->m_log);
-			if (death >= info->time_to_die && !info->death)
-			{
-				info->death = 1;
-				printf("%s%llu %d died\n%s", RED, get_time_log(info),
-					info->philos[i].id, NO_COLOR);
-				pthread_mutex_unlock(&info->m_log);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&info->m_log);
-		}
-		ft_usleep(1);
-	}
-	return (NULL);
-}
 
 void	controler(t_info *info)
 {	

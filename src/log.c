@@ -6,7 +6,7 @@
 /*   By: viroques <viroques@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/21 13:08:35 by viroques          #+#    #+#             */
-/*   Updated: 2021/08/30 11:56:06 by viroques         ###   ########.fr       */
+/*   Updated: 2021/08/30 15:31:15 by viroques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_log(t_philo *philo, char *doing, char *color)
 {
 	pthread_mutex_lock(&philo->info->m_log);
-	if (philo->info->death || philo->info->finish)
+	if (philo->info->death || philo->info->finish == philo->info->nb_philo)
 	{
 		pthread_mutex_unlock(&philo->info->m_log);
 		return ;
